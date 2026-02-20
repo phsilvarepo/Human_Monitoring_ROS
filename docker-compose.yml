@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+
+  yolo:
+    build: .
+    container_name: yolo_ros2
+    runtime: nvidia
+    network_mode: host
+    ipc: host
+    shm_size: "2gb"
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    command: >
+      ros2 run yolo_ros yolo_node
+      --ros-args
+      -p image_topic:=${IMAGE_TOPIC}
+      -p depth_topic:=${DEPTH_TOPIC}
+      -p camera_info_topic:=${CAMERA_INFO_TOPIC}
+      -p confidence_threshold:=${CONF_THRESHOLD}
+      -p save_video:=${SAVE_VIDEO}
+      -p save_json:=${SAVE_JSON}
+      -p output_base:=${OUTPUT_BASE}
+      -p publish_annotated:=${PUBLISH_RESULT}
+
+  realsense:
+    image: ghcr.io/intelrealsense/realsense-ros:humble
+    container_name: realsense_ros2
+    network_mode: host
+    privileged: true
+    devices:
+      - /dev:/dev
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    command: >
+      ros2 launch realsense2_camera rs_launch.py
+        enable_color:=true
+        enable_depth:=true
+    profiles: ["camera"]
