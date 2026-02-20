@@ -38,3 +38,4 @@ docker compose up
 
 - This package was tested in a Linux x86 environment (Ubuntu 24.04) with CUDA-capable GPU support, running on an **RTX 3090**. 
 - Since the YOLO architecture is not very computationally expensive, it can run on weaker setups, but some changes to the Dockerfile (Ubuntu + CUDA version) may be required.
+- Still need to test Realsense 
